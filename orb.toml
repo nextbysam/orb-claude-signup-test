@@ -8,7 +8,7 @@ PORT = "8000"
 ORB_TEST_VAR = "hello-from-claude"
 
 [source]
-git = "https://github.com/AWLSEN/orb-claude-signup-test"
+git = "https://github.com/nextbysam/orb-claude-signup-test"
 branch = "main"
 
 [build]
