@@ -14,7 +14,10 @@ branch = "main"
 
 [build]
 working_dir = "/agent/code"
-steps = ["python3 -c \"print('no-op build')\""]
+steps = [
+    "git fetch origin main && git reset --hard origin/main",
+    "python3 -c \"print('no-op build')\"",
+]
 
 [llm]
 base_url = "https://api.anthropic.com"
