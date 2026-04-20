@@ -31,7 +31,7 @@ class H(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     heartbeat("startup")
-    port = int(os.environ.get("HTTP_PORT") or os.environ.get("PORT") or "8000")
+    port = int(os.environ.get("ORB_PORT") or os.environ.get("HTTP_PORT") or os.environ.get("PORT") or "8000")
     print(f"serving on :{port}", flush=True)
     try:
         HTTPServer(("0.0.0.0", port), H).serve_forever()
