@@ -1,0 +1,26 @@
+[agent]
+name = "claude-orb-signup-test"
+lang = "python"
+entry = "agent.py"
+
+[agent.env]
+PORT = "8000"
+ORB_TEST_VAR = "hello-from-claude"
+
+[source]
+git = "https://github.com/AWLSEN/orb-claude-signup-test"
+branch = "main"
+
+[build]
+working_dir = "/agent/code"
+steps = []
+
+[llm]
+base_url = "https://api.anthropic.com"
+
+[ports]
+expose = [8000]
+
+[resources]
+runtime = "2GB"
+disk = "4GB"
