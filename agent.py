@@ -1,8 +1,19 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import json, os, datetime
+import json, os, datetime, sys, traceback
+
+HEARTBEAT = "/agent/data/heartbeat.txt"
+
+def heartbeat(stage):
+    try:
+        os.makedirs(os.path.dirname(HEARTBEAT), exist_ok=True)
+        with open(HEARTBEAT, "a") as f:
+            f.write(f"{datetime.datetime.utcnow().isoformat()}Z {stage} env={dict(os.environ)}\n")
+    except Exception:
+        traceback.print_exc()
 
 class H(BaseHTTPRequestHandler):
     def do_GET(self):
+        heartbeat(f"request {self.path}")
         body = json.dumps({
             "hello": "from claude-code running on orb",
             "path": self.path,
@@ -19,6 +30,11 @@ class H(BaseHTTPRequestHandler):
         pass
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", "8000"))
+    heartbeat("startup")
+    port = int(os.environ.get("HTTP_PORT") or os.environ.get("PORT") or "8000")
     print(f"serving on :{port}", flush=True)
-    HTTPServer(("0.0.0.0", port), H).serve_forever()
+    try:
+        HTTPServer(("0.0.0.0", port), H).serve_forever()
+    except Exception:
+        heartbeat("crash:" + traceback.format_exc().replace("\n", " | "))
+        raise

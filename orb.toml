@@ -4,7 +4,8 @@ lang = "python"
 entry = "agent.py"
 
 [agent.env]
-PORT = "8000"
+HTTP_PORT = "8000"
+PYTHONUNBUFFERED = "1"
 ORB_TEST_VAR = "hello-from-claude"
 
 [source]
@@ -13,7 +14,7 @@ branch = "main"
 
 [build]
 working_dir = "/agent/code"
-steps = []
+steps = ["python3 -c \"print('no-op build')\""]
 
 [llm]
 base_url = "https://api.anthropic.com"
